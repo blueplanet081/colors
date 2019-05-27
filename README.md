@@ -1,2 +1,2 @@
 # colors
-color guide application by tkinter
+color guide application made with tkinter
