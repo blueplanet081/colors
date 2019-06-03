@@ -33,7 +33,7 @@ class Frame(ttk.Frame):
             command=self.mycanvas.yview
             # スクロールバーをcanvasに接続↑
         )
-        # self.mycanvas['yscrollcommand'] = self.myscb.set
+        # self.mycanvas['yscrollcommand'] = self.myscb.set # 別の書き方
         self.mycanvas.configure(yscrollcommand=self.myscb.set)
         # canvasのスクロール位置を、スクロールバーに反映↑
 
@@ -48,18 +48,34 @@ class Frame(ttk.Frame):
 
     def y_scroll(self, event):
         """
-        <MouseWheel>にバインドした垂直スクロール動作
+        <MouseWheel>にバインドした垂直スクロール動作(Windows or Mac)
+        <Button-5> scroll up on Linux
+        <Button-4> scroll down on Linux
         """
         print('event.num = ', event.num)
         print("Wheel delta = ", event.delta)
+        ystep = 0
+        if event.num == 5:      # scroll up on Linux
+            ystep = 1
+        elif event.num == 4: # scroll down on Linux
+            ystep = -1
+        else:                   # scroll on Windows or Mac
+            ystep = -1*(event.delta//60)
+            if ystep == 0:
+                ystep = -1
+        print("ystep = ", ystep)
         # self.mycanvas.yview('scroll', int(-1*event.delta/60), 'units')
-        self.mycanvas.yview('scroll', 1 if event.delta < 0 else -1, 'units')
+        # self.mycanvas.yview('scroll', 1 if event.delta < 0 else -1, 'units')
+        self.mycanvas.yview('scroll', ystep, 'units')
         """
-        delta、マイナスがスクロールアップ
+        event.delta、マイナスがスクロールアップ
         windowsだと、１クリックが -120/120
         Macだと、1クリックで -1/1
         Mac/MagicMouseだと、-10～10くらい、フリクションあり
-        ※現在は delta量は無視して、上か下かだけ設定している↑
+        Linux だと、<Button-5>/<Button-4> で、event.delta は無視（いつも 0）
+
+        note: Macだと、スクロールホイールの左右、MagicMouseの左右スクロールでも
+        <MouseWheel>が発生するけど、上下との区別が不明 (2019/6/10)
         """
 
     def create_bindings(self):
@@ -74,7 +90,6 @@ class Frame(ttk.Frame):
         self.frame2.bind("<MouseWheel>", self.y_scroll)
         self.frame2.bind("<Button-4>", self.y_scroll)
         self.frame2.bind("<Button-5>", self.y_scroll)
-        # note:linuxだと<MouseWheel>じゃなくて<Button-4>になるらしい？（未確認）
 
     def set_colors(self, myframe):
         """
