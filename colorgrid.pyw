@@ -68,7 +68,10 @@ class Frame(ttk.Frame):
         self.frame2.bind("<Configure>", set_scrollregion)
 
         self.mycanvas.bind("<MouseWheel>", self.y_scroll)
+        self.mycanvas.bind("<Button-4>", self.y_scroll)
         self.frame2.bind("<MouseWheel>", self.y_scroll)
+        self.frame2.bind("<Button-4>", self.y_scroll)
+        # note:linuxだと<MouseWheel>じゃなくて<Button-4>になるらしい？（未確認）
 
     def set_colors(self, myframe):
         """
