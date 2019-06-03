@@ -50,6 +50,7 @@ class Frame(ttk.Frame):
         """
         <MouseWheel>にバインドした垂直スクロール動作
         """
+        print('event.num = ', event.num)
         print("Wheel delta = ", event.delta)
         # self.mycanvas.yview('scroll', int(-1*event.delta/60), 'units')
         self.mycanvas.yview('scroll', 1 if event.delta < 0 else -1, 'units')
@@ -69,8 +70,10 @@ class Frame(ttk.Frame):
 
         self.mycanvas.bind("<MouseWheel>", self.y_scroll)
         self.mycanvas.bind("<Button-4>", self.y_scroll)
+        self.mycanvas.bind("<Button-5>", self.y_scroll)
         self.frame2.bind("<MouseWheel>", self.y_scroll)
         self.frame2.bind("<Button-4>", self.y_scroll)
+        self.frame2.bind("<Button-5>", self.y_scroll)
         # note:linuxだと<MouseWheel>じゃなくて<Button-4>になるらしい？（未確認）
 
     def set_colors(self, myframe):
@@ -86,18 +89,26 @@ class Frame(ttk.Frame):
             label = tk.Label(myframe, text=color[0], bg="white", relief=tk.GROOVE)
             label.grid(row=i, column=0, sticky="news", padx="0.5m")
             label.bind("<MouseWheel>", self.y_scroll)
+            label.bind("<Button-4>", self.y_scroll)
+            label.bind("<Button-5>", self.y_scroll)
 
             label = tk.Label(myframe, text=color[0], bg=color[0], relief=tk.GROOVE)
             label.grid(row=i, column=1, sticky="news")
             label.bind("<MouseWheel>", self.y_scroll)
+            label.bind("<Button-4>", self.y_scroll)
+            label.bind("<Button-5>", self.y_scroll)
 
             label = tk.Label(myframe, text=colorhex, bg=colorhex, relief=tk.GROOVE)
             label.grid(row=i, column=2, sticky="news", ipadx=5)
             label.bind("<MouseWheel>", self.y_scroll)
+            label.bind("<Button-4>", self.y_scroll)
+            label.bind("<Button-5>", self.y_scroll)
 
             label = tk.Label(myframe, text=colorhex, bg="white", relief=tk.GROOVE)
             label.grid(row=i, column=3, sticky="news", ipadx=5)
             label.bind("<MouseWheel>", self.y_scroll)
+            label.bind("<Button-4>", self.y_scroll)
+            label.bind("<Button-5>", self.y_scroll)
 
 
 def def_colors():
